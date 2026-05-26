@@ -1,0 +1,10 @@
+build/
+build_win/
+build_android/
+*.o
+*.obj
+*.exe
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile

@@ -72,6 +72,23 @@ void format_xml(const fs::path& path, const Config& config) {
         return;
     }
 
+    if (config.removeBlankTexts) {
+        struct blank_remover : pugi::xml_tree_walker {
+            std::vector<pugi::xml_node> nodes;
+            virtual bool for_each(pugi::xml_node& node) override {
+                if (node.type() == pugi::node_pcdata) {
+                    std::string text = node.value();
+                    if (text.find_first_not_of(" \t\n\r") == std::string::npos) {
+                        nodes.push_back(node);
+                    }
+                }
+                return true;
+            }
+        } remover;
+        doc.traverse(remover);
+        for (auto& n : remover.nodes) n.parent().remove_child(n);
+    }
+
     if (config.removeComments) {
         struct node_retriever : pugi::xml_tree_walker {
             std::vector<pugi::xml_node> nodes;
@@ -171,7 +188,7 @@ int main(int argc, char* argv[]) {
             case 'r': config.recursive = true; break;
             case 'i': config.indent = std::stoi(optarg); break;
             case 'c': config.removeComments = true; break;
-            case 's': config.shortTags = true; break;
+            case 's': config.shortTags = !config.shortTags; break;
             case 't': config.removeBlankTexts = true; break;
             case 'l': config.removeEmptyLines = true; break;
             case 'e': config.encoding = optarg; break;

@@ -5,8 +5,7 @@ Um formatador de XML robusto escrito em C++, projetado para ser rápido e versá
 ## Funcionalidades
 
 - Formatação de arquivos individuais ou em lote.
-- Processamento recursivo de diretórios.
-- Suporte a múltiplas extensões (i3d, gltf, xml, etc).
+- Processamento recursivo de diretório.
 - Remoção de comentários e textos em branco.
 - Controle total sobre indentação e declaração XML.
 - Cross-platform: Windows, Linux e Android (aarch64/armv7a).
